@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CockpitLab — Quick Setup</title>
+<link rel="icon" type="image/png" href="./site_airbus/icon_debug.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --navy: #002447; --white: #FFFFFF; --muted: rgba(255,255,255,0.50);
+  --green: #2ED573; --red: #FF4757; --blue-accent: #3A8EF6; --amber: #FFA502;
+  --page-pad: clamp(20px,5vw,72px);
+  --radius: clamp(12px,1.4vw,18px); --radius-sm: 8px;
+  --sp-xs:6px; --sp-sm:12px; --sp-md:20px; --sp-lg:32px; --sp-xl:48px;
+}
+html, body { height:100%; font-family:'DM Sans',sans-serif; color:var(--white); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+body { background-image:url('./site_airbus/cockpitlab_image.png'); background-size:cover; background-position:center; background-attachment:fixed; position:relative; }
+body::before { content:''; position:fixed; inset:0; background:linear-gradient(160deg,rgba(10,20,35,0.88) 0%,rgba(5,12,22,0.82) 50%,rgba(10,20,35,0.88) 100%); z-index:0; }
+.page { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100dvh; min-height:100vh; padding:0 var(--page-pad); max-width:780px; margin:0 auto; width:100%; }
+/* ── HEADER ── */
+header { padding:clamp(28px,5vh,60px) 0 clamp(20px,3vh,36px); flex-shrink:0; }
+.brand { display:flex; align-items:center; gap:12px; margin-bottom:var(--sp-lg); }
+.brand-logo { height:clamp(20px,2.4vw,32px); width:auto; background:rgba(255,255,255,0.06); border-radius:4px; min-width:76px; }
+.brand-sep { width:1px; height:clamp(14px,1.8vw,22px); background:rgba(255,255,255,0.2); flex-shrink:0; }
+.brand-name { font-family:'DM Mono',monospace; font-size:clamp(9px,0.75vw,11px); font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.hero-label { font-family:'DM Mono',monospace; font-size:10px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:var(--sp-sm); }
+.hero-title { font-family:'Syne',sans-serif; font-size:clamp(26px,4.5vw,52px); font-weight:800; letter-spacing:-0.02em; line-height:1.05; color:var(--white); margin-bottom:var(--sp-md); }
+.hero-title em { font-style:normal; color:rgba(255,255,255,0.32); }
+.subtitle { font-size:clamp(12px,1.1vw,14px); font-weight:400; color:rgba(255,255,255,0.55); line-height:1.7; max-width:480px; }
+/* ── MAIN ── */
+main { flex:1; display:flex; flex-direction:column; gap:var(--sp-lg); padding-bottom:clamp(16px,3vh,32px); justify-content:center; }
+/* ── STEPS ── */
+.steps { display:flex; align-items:center; }
+.step-item { display:flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.25); transition:color 0.2s; }
+.step-item.active { color:var(--white); }
+.step-item.done { color:var(--green); }
+.step-circle { width:24px; height:24px; border-radius:50%; border:1.5px solid currentColor; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; transition:all 0.2s; flex-shrink:0; }
+.step-item.active .step-circle { background:var(--white); color:var(--navy); border-color:var(--white); }
+.step-item.done .step-circle { background:var(--green); border-color:var(--green); color:var(--navy); }
+.step-line { flex:1; height:1px; background:rgba(255,255,255,0.12); margin:0 14px; }
+/* ── SECTION LABEL ── */
+.section-label { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:500; text-transform:uppercase; letter-spacing:0.14em; color:rgba(255,255,255,0.3); margin-bottom:var(--sp-sm); }
+/* ── QUESTIONS ── */
+.questions-card { background:rgba(255,255,255,0.05); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.10); border-radius:var(--radius); overflow:hidden; }
+.question-row { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.07); gap:16px; transition:background 0.2s; }
+.question-row:last-child { border-bottom:none; }
+.question-row.answered { background:rgba(255,255,255,0.03); }
+.q-label { font-size:clamp(12.5px,1vw,14px); font-weight:400; color:rgba(255,255,255,0.82); line-height:1.45; flex:1; }
+/* ── TOGGLE ── */
+.toggle-group { display:flex; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10); border-radius:var(--radius-sm); overflow:hidden; flex-shrink:0; }
+.toggle-btn { font-size:11.5px; font-weight:600; font-family:'DM Sans',sans-serif; padding:7px 18px; border:none; background:transparent; cursor:pointer; color:rgba(255,255,255,0.38); transition:all 0.15s; letter-spacing:0.02em; }
+.toggle-btn+.toggle-btn { border-left:1px solid rgba(255,255,255,0.10); }
+.toggle-btn:hover:not(.sel-yes):not(.sel-no) { background:rgba(255,255,255,0.09); color:rgba(255,255,255,0.8); }
+.toggle-btn.sel-yes { background:rgba(46,213,115,0.18); color:var(--green); }
+.toggle-btn.sel-no { background:rgba(255,71,87,0.18); color:var(--red); }
+/* ── GENERATE BTN ── */
+.btn-generate { width:100%; padding:16px; background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); color:var(--white); border:1px solid rgba(255,255,255,0.18); border-radius:var(--radius); font-family:'Syne',sans-serif; font-size:13px; font-weight:700; cursor:pointer; letter-spacing:0.06em; text-transform:uppercase; transition:background 0.18s,border-color 0.18s,transform 0.1s,opacity 0.15s,box-shadow 0.18s; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-generate:disabled { opacity:0.18; cursor:not-allowed; }
+.btn-generate:hover:not(:disabled) { background:rgba(255,255,255,0.15); border-color:rgba(255,255,255,0.36); box-shadow:0 0 0 4px rgba(255,255,255,0.04); }
+.btn-generate:active:not(:disabled) { transform:scale(0.988); }
+/* ── MANDATORY TAG ── */
+.mandatory-tag { display:inline-flex; align-items:center; gap:3px; font-family:'DM Mono',monospace; font-size:8.5px; font-weight:500; letter-spacing:0.10em; text-transform:uppercase; color:var(--amber); background:rgba(255,165,2,0.12); border:1px solid rgba(255,165,2,0.30); padding:2px 7px; border-radius:99px; margin-left:8px; flex-shrink:0; }
+/* ── CHECKLIST ── */
+.checklist-wrap { display:none; }
+.checklist-wrap.visible { display:block; }
+.progress-block { margin-bottom:var(--sp-md); }
+.progress-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.progress-label { font-size:11px; font-weight:400; color:rgba(255,255,255,0.38); }
+.progress-pct { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--green); letter-spacing:0.06em; }
+.progress-track { height:2px; background:rgba(255,255,255,0.10); border-radius:2px; overflow:hidden; }
+.progress-fill { height:100%; background:var(--green); border-radius:2px; transition:width 0.35s ease; }
+.check-list { display:flex; flex-direction:column; gap:10px; }
+/* ── CHECK CARD ── */
+.check-card { background:rgba(255,255,255,0.05); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.10); border-radius:var(--radius); padding:18px 20px; display:flex; align-items:flex-start; gap:14px; cursor:pointer; user-select:none; transition:background 0.2s,border-color 0.2s,transform 0.15s,box-shadow 0.2s; position:relative; }
+.check-card:hover { background:rgba(255,255,255,0.10); border-color:rgba(255,255,255,0.26); box-shadow:0 6px 24px rgba(0,0,0,0.28); transform:translateY(-2px); }
+.check-card:active { transform:scale(0.988) translateY(0); }
+.check-card.done { border-color:rgba(46,213,115,0.38); background:rgba(46,213,115,0.07); }
+.check-card.done:hover { background:rgba(46,213,115,0.12); border-color:rgba(46,213,115,0.55); box-shadow:0 6px 24px rgba(46,213,115,0.08); }
+.check-card.mandatory { border-left:3px solid rgba(255,165,2,0.55); }
+.check-card.mandatory.done { border-left:3px solid rgba(46,213,115,0.55); }
+.order-badge { position:absolute; top:14px; right:16px; font-family:'DM Mono',monospace; font-size:9px; font-weight:500; letter-spacing:0.10em; text-transform:uppercase; color:rgba(255,255,255,0.20); }
+.check-card.done .order-badge { color:rgba(46,213,115,0.40); }
+.check-circle { width:24px; height:24px; min-width:24px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center; margin-top:1px; transition:all 0.2s; flex-shrink:0; }
+.check-card:hover .check-circle { border-color:rgba(255,255,255,0.55); }
+.check-card.done .check-circle { background:var(--green); border-color:var(--green); }
+.check-icon { width:12px; height:12px; display:none; }
+.check-card.done .check-icon { display:block; }
+.check-body { flex:1; padding-right:56px; }
+.check-title { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--white); margin-bottom:6px; transition:color 0.2s; display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.check-card.done .check-title { color:rgba(255,255,255,0.35); text-decoration:line-through; text-decoration-color:var(--green); }
+.check-desc { font-size:12px; font-weight:400; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:12px; }
+/* ── VIDEO CHIP ── */
+.video-chip { display:inline-flex; align-items:center; gap:6px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; letter-spacing:0.04em; color:var(--white); background:rgba(58,142,246,0.16); border:1px solid rgba(58,142,246,0.32); padding:5px 12px; border-radius:99px; text-decoration:none; cursor:pointer; transition:background 0.15s,border-color 0.15s,transform 0.1s,box-shadow 0.15s; }
+.video-chip:hover { background:rgba(58,142,246,0.30); border-color:rgba(58,142,246,0.55); box-shadow:0 0 0 3px rgba(58,142,246,0.08); transform:translateY(-1px); }
+.video-chip:active { transform:scale(0.97); }
+.video-chip svg { width:10px; height:10px; fill:currentColor; flex-shrink:0; }
+/* ── ALL DONE ── */
+.all-done { display:none; text-align:center; padding:3rem 2rem; background:rgba(46,213,115,0.07); border:1px solid rgba(46,213,115,0.30); border-radius:var(--radius); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.all-done.visible { display:block; }
+.all-done-icon { width:56px; height:56px; border-radius:50%; border:1.5px solid rgba(46,213,115,0.45); display:flex; align-items:center; justify-content:center; margin:0 auto 1.25rem; }
+.all-done-icon svg { width:26px; height:26px; stroke:var(--green); fill:none; stroke-width:2.2; }
+.all-done h2 { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; color:var(--white); margin-bottom:8px; letter-spacing:-0.01em; }
+.all-done p { font-size:13px; font-weight:300; color:rgba(255,255,255,0.50); line-height:1.7; }
+/* ── RESET ── */
+.reset-link { display:block; text-align:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; letter-spacing:0.10em; text-transform:uppercase; color:rgba(255,255,255,0.25); cursor:pointer; margin-top:18px; background:none; border:none; transition:color 0.15s,letter-spacing 0.2s; }
+.reset-link:hover { color:rgba(255,255,255,0.65); letter-spacing:0.14em; }
+/* ── FOOTER ── */
+footer { padding:clamp(10px,1.5vh,18px) 0 clamp(24px,4vh,44px); flex-shrink:0; display:flex; justify-content:center; }
+.help-link { display:inline-flex; align-items:center; gap:10px; text-decoration:none; padding:8px 18px 8px 8px; border:1px solid rgba(255,255,255,0.14); border-radius:99px; background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:background 0.15s,transform 0.15s,border-color 0.15s,box-shadow 0.15s; }
+.help-link:hover { background:rgba(255,255,255,0.10); border-color:rgba(255,255,255,0.30); box-shadow:0 0 0 3px rgba(255,255,255,0.04); }
+.help-link:active { transform:scale(0.96); }
+.help-circle { width:clamp(26px,2.2vw,32px); height:clamp(26px,2.2vw,32px); border-radius:50%; background:var(--white); color:var(--navy); display:flex; align-items:center; justify-content:center; font-size:clamp(11px,1vw,13px); font-weight:700; flex-shrink:0; }
+.help-text { font-size:clamp(10.5px,0.9vw,12.5px); font-weight:500; color:rgba(255,255,255,0.72); }
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  footer { padding-bottom:calc(clamp(24px,4vh,44px) + env(safe-area-inset-bottom)); }
+}
+/* ── VIDEO MODAL ── */
+.video-modal {
+  position:fixed; inset:0; z-index:100;
+  background:rgba(0,10,24,0.92);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  opacity:0; pointer-events:none;
+  transition:opacity 0.3s ease;
+  padding:24px;
+}
+.video-modal.active { opacity:1; pointer-events:auto; }
+.modal-header {
+  width:100%; max-width:520px;
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+.modal-title {
+  font-family:'DM Mono',monospace;
+  font-size:10px; font-weight:500; letter-spacing:0.12em;
+  text-transform:uppercase; color:rgba(255,255,255,0.45);
+}
+.modal-close {
+  display:flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);
+  color:var(--white); padding:7px 14px 7px 10px;
+  border-radius:99px; font-family:'DM Sans',sans-serif;
+  font-weight:600; font-size:12px; cursor:pointer;
+  transition:background 0.15s,transform 0.1s,border-color 0.15s;
+  letter-spacing:0.02em;
+}
+.modal-close:hover { background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.35); }
+.modal-close:active { transform:scale(0.96); }
+.modal-close svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; }
+.video-wrapper {
+  width:100%; max-width:520px;
+  background:#000;
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.10);
+  max-height:72vh;
+  display:flex; justify-content:center; align-items:center;
+}
+.video-wrapper video {
+  width:100%; height:100%;
+  max-height:72vh;
+  object-fit:contain;
+  display:block;
+}
+/* click outside to close */
+.modal-backdrop {
+  position:absolute; inset:0; z-index:-1; cursor:pointer;
+}
+@media (max-width:480px) {
+  .hero-title { font-size:clamp(22px,8vw,32px); }
+  .question-row { padding:14px 16px; }
+  .check-card { padding:15px 16px; }
+  .video-modal { padding:16px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">
+      <img class="brand-logo" src="./site_airbus/AIRBUS_Blue_logo.png" alt="Airbus logo" />
+      <div class="brand-sep"></div>
+      <span class="brand-name">Airbus — CockpitLab</span>
+    </div>
+    <p class="hero-label">QR — Workstation</p>
+    <h1 class="hero-title">Quick<br><em>setup.</em></h1>
+    <p class="subtitle">Answer the questions below to generate your personalised checklist. Only the steps you actually need will appear, in the recommended order.</p>
+  </header>
+  <main>
+    <div class="steps" id="stepIndicator">
+      <div class="step-item active" id="step1">
+        <div class="step-circle" id="s1c">1</div>
+        <span>Workstation status</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-item" id="step2">
+        <div class="step-circle" id="s2c">2</div>
+        <span>Your checklist</span>
+      </div>
+    </div>
+    <div>
+      <p class="section-label">Current state of your workstation</p>
+      <div class="questions-card" id="questionsCard">
+        <div class="question-row" id="qrow-screens">
+          <span class="q-label">All 4 screens turn on correctly?</span>
+          <div class="toggle-group">
+            <button class="toggle-btn" onclick="setAnswer('screens','yes',this)">Yes</button>
+            <button class="toggle-btn" onclick="setAnswer('screens','no',this)">No</button>
+          </div>
+        </div>
+        <div class="question-row" id="qrow-layout">
+          <span class="q-label">Screens are arranged in a square layout (Windows display settings)?</span>
+          <div class="toggle-group">
+            <button class="toggle-btn" onclick="setAnswer('layout','yes',this)">Yes</button>
+            <button class="toggle-btn" onclick="setAnswer('layout','no',this)">No</button>
+          </div>
+        </div>
+        <div class="question-row" id="qrow-orientation">
+          <span class="q-label">Screens are correctly oriented (not upside down)?</span>
+          <div class="toggle-group">
+            <button class="toggle-btn" onclick="setAnswer('orientation','yes',this)">Yes</button>
+            <button class="toggle-btn" onclick="setAnswer('orientation','no',this)">No</button>
+          </div>
+        </div>
+        <div class="question-row" id="qrow-figma4">
+          <span class="q-label">Figma is displayed across all 4 screens?</span>
+          <div class="toggle-group">
+            <button class="toggle-btn" onclick="setAnswer('figma4','yes',this)">Yes</button>
+            <button class="toggle-btn" onclick="setAnswer('figma4','no',this)">No</button>
+          </div>
+        </div>
+        <div class="question-row" id="qrow-taskbar">
+          <span class="q-label">Windows taskbar is already hidden?</span>
+          <div class="toggle-group">
+            <button class="toggle-btn" onclick="setAnswer('taskbar','yes',this)">Yes</button>
+            <button class="toggle-btn" onclick="setAnswer('taskbar','no',this)">No</button>
+          </div>
+        </div>
+        <div class="question-row" id="qrow-figma">
+          <span class="q-label">Figma is already set to dark theme?</span>
+          <div class="toggle-group">
+            <button class="toggle-btn" onclick="setAnswer('figma','yes',this)">Yes</button>
+            <button class="toggle-btn" onclick="setAnswer('figma','no',this)">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-generate" id="genBtn" onclick="generate()" disabled>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Generate my checklist
+    </button>
+    <div class="checklist-wrap" id="checklistWrap">
+      <p class="section-label">Your personalised checklist — follow this order</p>
+      <div class="progress-block">
+        <div class="progress-top">
+          <span class="progress-label" id="progressLabel">0 / 0 steps</span>
+          <span class="progress-pct" id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="check-list" id="checkList"></div>
+      <button class="reset-link" onclick="reset()">Start over</button>
+    </div>
+    <div class="all-done" id="allDone">
+      <div class="all-done-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Workstation is ready</h2>
+      <p>No additional configuration needed.<br>Have a great session!</p>
+      <button class="reset-link" onclick="reset()">Start over</button>
+    </div>
+  </main>
+  <footer>
+    <a class="help-link" href="mailto:garance.raynaud@airbus.com,aicha-eunice.kamssoko@airbus.com?subject=CockpitLab%20-%20Setup%20Support">
+      <div class="help-circle">?</div>
+      <span class="help-text">Need help? Contact us</span>
+    </a>
+  </footer>
+</div>
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="videoModal">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-header">
+    <span class="modal-title" id="modalTitle">Tutorial</span>
+    <button class="modal-close" id="closeBtn">
+      <svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke-linecap="round"/></svg>
+      Back to checklist
+    </button>
+  </div>
+  <div class="video-wrapper">
+    <video id="player" controls playsinline></video>
+  </div>
+</div>
+<script>
+const answers = {};
+const keys = ['screens','layout','orientation','figma4','taskbar','figma'];
+const doneMap = {};
+const steps = [
+  {
+    id:'screens', show:a=>a.screens==='no', mandatory:false,
+    title:'Connect the screens',
+    desc:'Check the USB-C cable and DisplayPort connections. Restart the workstation if needed.',
+    video:'Watch video — Black screens',
+    url:'./site_airbus/bug_all_screen_black.mp4'
+  },
+  {
+    id:'layout', show:a=>a.layout==='no', mandatory:true,
+    title:'Arrange screens in a square layout',
+    desc:'Right-click desktop → Display settings → drag the 4 screen tiles into a 2×2 square arrangement. This step must be done in Windows settings.',
+    video:'Watch video — Screen layout',
+    url:'./site_airbus/setup_display.mp4'
+  },
+  {
+    id:'orientation', show:a=>a.orientation==='no', mandatory:false,
+    title:'Fix screen orientation',
+    desc:'Right-click desktop → Display settings → select the rotated screen → Orientation → Landscape.',
+    video:'Watch video — Screen orientation',
+    url:'./site_airbus/upside_down.mp4'
+  },
+  {
+    id:'figma4', show:a=>a.figma4==='no', mandatory:false,
+    title:'Deploy Figma across 4 screens',
+    desc:'Open 4 Figma windows and position one on each screen of the device.',
+    video:'Watch video — Figma 4 screens',
+    url:'./site_airbus/figma_deploy.mp4'
+  },
+  {
+    id:'taskbar', show:a=>a.taskbar==='no', mandatory:false,
+    title:'Hide the Windows taskbar',
+    desc:'Right-click taskbar → Taskbar settings → Automatically hide the taskbar in desktop mode.',
+    video:'Watch video — Hide taskbar',
+    url:'./site_airbus/taskbar.mp4'
+  },
+  {
+    id:'figma', show:a=>a.figma==='no', mandatory:false,
+    title:'Switch Figma to dark theme',
+    desc:'Figma menu (top-left) → Preferences → Theme → Dark. More realistic in cockpit conditions.',
+    video:'Watch video — Dark theme',
+    url:'./site_airbus/figma_theme.mp4'
+  }
+];
+// Modal
+const modal   = document.getElementById('videoModal');
+const player  = document.getElementById('player');
+const closeBtn= document.getElementById('closeBtn');
+const backdrop= document.getElementById('modalBackdrop');
+const modalTitle = document.getElementById('modalTitle');
+function openVideo(url, title) {
+  modalTitle.textContent = title.replace('Watch video — ', '');
+  player.src = url;
+  modal.classList.add('active');
+  player.play();
+}
+function closeVideo() {
+  modal.classList.remove('active');
+  player.pause();
+  player.src = '';
+}
+closeBtn.addEventListener('click', closeVideo);
+backdrop.addEventListener('click', closeVideo);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+// Checklist logic
+function setAnswer(key, val, btn) {
+  answers[key] = val;
+  document.getElementById('qrow-' + key).classList.add('answered');
+  btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('sel-yes','sel-no'));
+  btn.classList.add(val === 'yes' ? 'sel-yes' : 'sel-no');
+  document.getElementById('genBtn').disabled = !keys.every(k => answers[k]);
+}
+function generate() {
+  const visible = steps.filter(s => s.show(answers));
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step1').classList.add('done');
+  document.getElementById('s1c').textContent = '✓';
+  document.getElementById('step2').classList.add('active');
+  if (visible.length === 0) {
+    document.getElementById('allDone').classList.add('visible');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step2').classList.add('done');
+    document.getElementById('s2c').textContent = '✓';
+    return;
+  }
+  document.getElementById('checklistWrap').classList.add('visible');
+  renderSteps(visible);
+  document.getElementById('checklistWrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function renderSteps(visible) {
+  const total = visible.length;
+  const done  = visible.filter(s => doneMap[s.id]).length;
+  const pct   = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progressLabel').textContent = `${done} / ${total} step${total > 1 ? 's' : ''}`;
+  document.getElementById('progressPct').textContent   = pct + '%';
+  document.getElementById('progressFill').style.width  = pct + '%';
+  const list = document.getElementById('checkList');
+  list.innerHTML = '';
+  visible.forEach((s, i) => {
+    const isDone = doneMap[s.id];
+    const card   = document.createElement('div');
+    card.className = 'check-card' + (s.mandatory ? ' mandatory' : '') + (isDone ? ' done' : '');
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', s.title);
+    card.onclick   = () => toggleStep(s.id, visible);
+    card.onkeydown = e => { if (e.key==='Enter'||e.key===' ') toggleStep(s.id, visible); };
+    const mandatoryTag = s.mandatory ? `<span class="mandatory-tag">Required in settings</span>` : '';
+    card.innerHTML = `
+      <div class="check-circle">
+        <svg class="check-icon" viewBox="0 0 12 12" fill="none">
+          <polyline points="2 6 5 9 10 3" stroke="#002447" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">${s.title}${mandatoryTag}</div>
+        <div class="check-desc">${s.desc}</div>
+        <button class="video-chip" onclick="event.stopPropagation(); openVideo('${s.url}','${s.video}')">
+          <svg viewBox="0 0 10 10"><path d="M2 1.5l6 3.5-6 3.5V1.5z"/></svg>
+          ${s.video}
+        </button>
+      </div>
+      <span class="order-badge">Step ${i + 1}</span>
+    `;
+    list.appendChild(card);
+  });
+}
+function toggleStep(id, visible) {
+  doneMap[id] = !doneMap[id];
+  renderSteps(visible);
+  const total = visible.length;
+  const done  = visible.filter(s => doneMap[s.id]).length;
+  if (done === total) {
+    setTimeout(() => {
+      document.getElementById('allDone').classList.add('visible');
+      document.getElementById('checklistWrap').classList.remove('visible');
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step2').classList.add('done');
+      document.getElementById('s2c').textContent = '✓';
+    }, 400);
+  }
+}
+function reset() {
+  keys.forEach(k => { delete answers[k]; delete doneMap[k]; });
+  document.getElementById('checklistWrap').classList.remove('visible');
+  document.getElementById('allDone').classList.remove('visible');
+  document.getElementById('genBtn').disabled = true;
+  document.querySelectorAll('.question-row').forEach(r => r.classList.remove('answered'));
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('sel-yes','sel-no'));
+  document.getElementById('step1').className = 'step-item active';
+  document.getElementById('step2').className = 'step-item';
+  document.getElementById('s1c').textContent = '1';
+  document.getElementById('s2c').textContent = '2';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+</script>
+</body>
+</html>
+
