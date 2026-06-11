@@ -308,35 +308,35 @@ const steps = [
   {
     id:'screens', show:a=>a.screens==='no', mandatory:false,
     title:'Connect the screens',
-    desc:'Check the USB-C cable and DisplayPort connections. Restart the workstation if needed.',
+    desc:'Check the USB-C cable and DisplayPort connections → Screen settings → display start → extend desktop.',
     video:'Watch video — Black screens',
     url:'./site_airbus/bug_all_screen_black.mp4'
   },
   {
     id:'layout', show:a=>a.layout==='no', mandatory:true,
     title:'Arrange screens in a square layout',
-    desc:'Right-click desktop → Display settings → drag the 4 screen tiles into a 2×2 square arrangement. This step must be done in Windows settings.',
+    desc:'Right-click desktop → Display settings → square arrangement. This step must be done in Windows settings.',
     video:'Watch video — Screen layout',
     url:'./site_airbus/setup_display.mp4'
   },
   {
     id:'orientation', show:a=>a.orientation==='no', mandatory:false,
     title:'Fix screen orientation',
-    desc:'Right-click desktop → Display settings → select the rotated screen → Orientation → Landscape.',
+    desc:'Right-click desktop → Display settings → select the rotated screen → Orientation → Upside-down landscape.',
     video:'Watch video — Screen orientation',
     url:'./site_airbus/upside_down.mp4'
   },
   {
     id:'figma4', show:a=>a.figma4==='no', mandatory:false,
     title:'Deploy Figma across 4 screens',
-    desc:'Open 4 Figma windows and position one on each screen of the device.',
+    desc:'Open Figma windows on your main screen and drag it on each 4 screens.',
     video:'Watch video — Figma 4 screens',
     url:'./site_airbus/figma_deploy.mp4'
   },
   {
     id:'taskbar', show:a=>a.taskbar==='no', mandatory:false,
     title:'Hide the Windows taskbar',
-    desc:'Right-click taskbar → Taskbar settings → Automatically hide the taskbar in desktop mode.',
+    desc:'Right-click taskbar → Taskbar settings → Taskbar behaviour → Automatically hide the taskbar in desktop mode.',
     video:'Watch video — Hide taskbar',
     url:'./site_airbus/taskbar.mp4'
   },
